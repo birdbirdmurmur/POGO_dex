@@ -1,10 +1,10 @@
+import { Header } from "../components/Header"
+
 const Root = () => {
 
   return (
     <>
-      <div>
-        <h1>Hello, POGO Dex.</h1>
-      </div>
+      <Header />
     </>
   )
 }
