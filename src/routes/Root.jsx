@@ -1,4 +1,4 @@
-const App = () => {
+const Root = () => {
 
   return (
     <>
@@ -9,4 +9,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Root
