@@ -22,13 +22,14 @@ const PokeballSVG = () => (
     </svg>
 );
 
-export const Header = () => {
+const Header = () => {
     return (
         <React.Fragment>
             <CssBaseline />
             <AppBar
                 component="nav"
-                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                position="sticky"
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '6vh', }}>
                 <Toolbar sx={{ maxWidth: '1200px', width: '100%' }}>
                     <PokeballSVG />
                     <Typography
@@ -52,3 +53,5 @@ export const Header = () => {
         </React.Fragment >
     )
 }
+
+export default Header
