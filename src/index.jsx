@@ -1,16 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './routes/Root.jsx'
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
+import Root from './routes/Root.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
-  }
+    element: <Root />,
+  },
 ])
 
 
