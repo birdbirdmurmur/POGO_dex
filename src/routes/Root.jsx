@@ -1,12 +1,13 @@
+import Header from "../components/Header"
 import Footer from "../components/Footer"
-import { Header } from "../components/Header"
+import { Types } from "../routes/Types"
 
 const Root = () => {
 
   return (
     <>
       <Header />
-      <h1>POGOdex</h1>
+      <Types />
       <Footer />
     </>
   )
