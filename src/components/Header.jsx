@@ -5,7 +5,11 @@ import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
-const navItems = ['Types', 'About']
+const navItems = [
+    { text: 'Pokedex', path: '/pokedex' },
+    { text: 'Types', path: '/types' },
+    { text: 'About', path: '/about' },
+]
 const PokeballSVG = () => (
     <svg
         id="Layer_1"
@@ -43,8 +47,13 @@ const Header = () => {
                     </Typography>
                     <Box>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}>
-                                {item}
+                            <Button
+                                key={item.text}
+                                component={Link}
+                                to={item.path}
+                                sx={{ color: '#fff' }}
+                            >
+                                {item.text}
                             </Button>
                         ))}
                     </Box>
