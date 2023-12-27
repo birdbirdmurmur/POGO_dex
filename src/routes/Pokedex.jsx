@@ -7,11 +7,13 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
 
 const Pokedex_URL = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json'
 
 export const Pokedex = () => {
     const [pokedex, setPokedex] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,13 +28,25 @@ export const Pokedex = () => {
         fetchData()
     }, [])
 
+    const filteredPokedex = pokedex.filter((item) =>
+        item.names.English.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
     return (
         <>
             <Typography variant="h3" gutterBottom align="center">
                 Pokedex
             </Typography>
+            <TextField
+                label="Search Pokemon"
+                variant="outlined"
+                fullWidth
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ marginBottom: '20px' }}
+            />
             <Grid container spacing={2}>
-                {pokedex.map((item, index) => {
+                {filteredPokedex.map((item, index) => {
                     if (item.generation === 1) {
                         return (
                             <Grid item xs={6} sm={4} md={3} key={index}>
