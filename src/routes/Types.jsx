@@ -27,36 +27,34 @@ export const Types = () => {
 
     return (
         <>
-            <Container maxWidth="lg" sx={{ height: '88vh', overflowY: 'scroll' }} >
-                <Typography variant="h3" gutterBottom align="center">
-                    Types
-                </Typography>
-                <Grid container spacing={3}>
-                    {data.map((item, index) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                            <Card sx={{ height: '100%' }}>
-                                <CardContent>
-                                    <Typography variant="h5" color="primary" gutterBottom>
-                                        主動方：{item.type}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography variant="subtitle1" gutterBottom>
-                                        打誰傷害減半： {item.halfDamageFrom.join(', ')}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography variant="subtitle1" gutterBottom>
-                                        打誰無效： {item.noDamageFrom.join(', ')}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography variant="subtitle1" gutterBottom>
-                                        被誰剋： {item.doubleDamageFrom.join(', ')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
+            <Typography variant="h3" gutterBottom align="center">
+                Types
+            </Typography>
+            <Grid container spacing={3}>
+                {data.map((item, index) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                        <Card sx={{ height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="h5" color="primary" gutterBottom>
+                                    主動方：{item.type}
+                                </Typography>
+                                <Divider />
+                                <Typography variant="subtitle1" gutterBottom>
+                                    打誰傷害減半： {item.halfDamageFrom.join(', ')}
+                                </Typography>
+                                <Divider />
+                                <Typography variant="subtitle1" gutterBottom>
+                                    打誰無效： {item.noDamageFrom.join(', ')}
+                                </Typography>
+                                <Divider />
+                                <Typography variant="subtitle1" gutterBottom>
+                                    被誰剋： {item.doubleDamageFrom.join(', ')}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
         </>
     )
 }

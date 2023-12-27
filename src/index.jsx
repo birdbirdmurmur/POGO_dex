@@ -7,6 +7,7 @@ import {
 import Root from './routes/Root.jsx'
 import { Pokedex } from './routes/Pokedex.jsx'
 import { Types } from './routes/Types.jsx'
+import { About } from './routes/About.jsx'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: 'types',
         element: <Types />,
+      },
+      {
+        path: 'about',
+        element: <About />,
       }
     ],
   },

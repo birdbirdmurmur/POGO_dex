@@ -27,7 +27,10 @@ export const Pokedex = () => {
     }, [])
 
     return (
-        <Container maxWidth="lg" sx={{ height: '88vh', overflowY: 'scroll', pt: '20px' }} >
+        <>
+            <Typography variant="h3" gutterBottom align="center">
+                Pokedex
+            </Typography>
             <Grid container spacing={2}>
                 {pokedex.map((item, index) => {
                     if (item.generation === 1) {
@@ -53,6 +56,7 @@ export const Pokedex = () => {
                     }
                 })}
             </Grid>
-        </Container>
+        </>
+
     )
 }
