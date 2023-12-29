@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -26,7 +25,7 @@ export const Types = () => {
     }, [])
 
     return (
-        <>
+        <React.Fragment>
             <Typography variant="h3" gutterBottom align="center">
                 Types
             </Typography>
@@ -55,6 +54,6 @@ export const Types = () => {
                     </Grid>
                 ))}
             </Grid>
-        </>
+        </React.Fragment>
     )
 }
