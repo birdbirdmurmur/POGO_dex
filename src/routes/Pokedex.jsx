@@ -36,9 +36,14 @@ export const Pokedex = () => {
         item.names.English.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const convertToChinese = (str) => {
-        const matchedType = allTypes.find((type) => type.english === str.toLowerCase())
-        return matchedType ? matchedType.zh : str
+    const getZhType = (str) => {
+        const matchedType = allTypes.find((type) => type.enType === str.toLowerCase())
+        return matchedType ? matchedType.zhType : str
+    }
+
+    const getBgColor = (type) => {
+        const matchedType = allTypes.find((t) => t.enType === type.toLowerCase())
+        return matchedType ? matchedType.bgColor : '#17CCF0'
     }
 
     return (
@@ -65,9 +70,15 @@ export const Pokedex = () => {
                                         <Typography variant="h6" sx={{ mb: 1 }}>
                                             {item.dexNr}. {item.names.English}
                                         </Typography>
-                                        <Chip label={convertToChinese(item.primaryType.names.English)} />
+                                        <Chip
+                                            label={getZhType(item.primaryType.names.English)}
+                                            sx={{ backgroundColor: getBgColor(item.primaryType.names.English) }}
+                                        />
                                         {item.secondaryType && (
-                                            <Chip label={convertToChinese(item.secondaryType.names.English)} />
+                                            <Chip
+                                                label={getZhType(item.secondaryType.names.English)}
+                                                sx={{ backgroundColor: getBgColor(item.secondaryType.names.English) }}
+                                            />
                                         )}
                                     </CardContent>
                                     {/* IMG cannot be loaded in Gen6 */}
