@@ -11,6 +11,7 @@ import { CardMedia } from '@mui/material'
 import { Heading } from '../components/Heading'
 import { SearchBar } from '../components/SearchBar'
 import { FilterButtons } from '../components/FilterButtons'
+import { allTypes } from '../data'
 
 const Pokedex_URL = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json'
 
@@ -34,6 +35,11 @@ export const Pokedex = () => {
     const filteredPokedex = pokedex.filter((item) =>
         item.names.English.toLowerCase().includes(searchTerm.toLowerCase())
     )
+
+    const convertToChinese = (str) => {
+        const matchedType = allTypes.find((type) => type.english === str.toLowerCase())
+        return matchedType ? matchedType.zh : str
+    }
 
     return (
         <React.Fragment>
@@ -59,9 +65,9 @@ export const Pokedex = () => {
                                         <Typography variant="h6" sx={{ mb: 1 }}>
                                             {item.dexNr}. {item.names.English}
                                         </Typography>
-                                        <Chip label={item.primaryType.names.English} />
+                                        <Chip label={convertToChinese(item.primaryType.names.English)} />
                                         {item.secondaryType && (
-                                            <Chip label={item.secondaryType.names.English} />
+                                            <Chip label={convertToChinese(item.secondaryType.names.English)} />
                                         )}
                                     </CardContent>
                                     {/* IMG cannot be loaded in Gen6 */}
