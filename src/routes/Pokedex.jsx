@@ -6,8 +6,11 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
 import { CardMedia } from '@mui/material'
+
+import { Heading } from '../components/Heading'
+import { SearchBar } from '../components/SearchBar'
+import { FilterButtons } from '../components/FilterButtons'
 
 const Pokedex_URL = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json'
 
@@ -34,17 +37,13 @@ export const Pokedex = () => {
 
     return (
         <React.Fragment>
-            <Typography variant="h3" gutterBottom align="center">
-                Pokedex
-            </Typography>
-            <TextField
-                label="Search Pokemon"
-                variant="outlined"
-                fullWidth
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                sx={{ mt: '20px' }}
-            />
+            {/* Heading*/}
+            <Heading title="Pokedex" />
+            {/* SearchBar */}
+            <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            {/* FilterButtons */}
+            <FilterButtons />
+            {/* All Data */}
             <Grid container spacing={2}>
                 {filteredPokedex.map((item, index) => {
                     if (item.generation === 1) {
