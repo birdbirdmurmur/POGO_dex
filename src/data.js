@@ -18,3 +18,15 @@ export const allTypes = [
     { enType: 'dark', zhType: '惡', bgColor: '#705848' },
     { enType: 'fairy', zhType: '妖精', bgColor: '#EE99AC' },
 ]
+
+export const allGenerations = [
+    { id: 1, zhName: '第一世代', zhRegion: '關都', },
+    { id: 2, zhName: '第二世代', zhRegion: '成都', },
+    { id: 3, zhName: '第三世代', zhRegion: '豐緣', },
+    { id: 4, zhName: '第四世代', zhRegion: '神奧', },
+    { id: 5, zhName: '第五世代', zhRegion: '合眾', },
+    { id: 6, zhName: '第六世代', zhRegion: '卡洛斯', },
+    { id: 7, zhName: '第七世代', zhRegion: '阿羅拉', },
+    { id: 8, zhName: '第八世代', zhRegion: '伽勒爾', },
+    { id: 9, zhName: '第九世代', zhRegion: '帕底亞', },
+]
