@@ -8,19 +8,29 @@ export const fetchPokedex = async () => {
         const pokedexResponse = await axios.get(Pokedex_URL);
         return pokedexResponse.data;
     } catch (error) {
-        console.log('Error fetching pokedex data:', error);
+        console.error('Error fetching pokedex data:', error.message);
         return [];
     }
 };
 
 export const fetchAllSpeciesData = async () => {
     try {
-        const allSpeciesData = await Promise.all(
-            Array.from({ length: 1008 }, (_, index) => axios.get(`${Species_URL}${index + 1}`))
-        );
-        return allSpeciesData.map((item) => item.data);
+        const speciesDataArray = [];
+        const batchSize = 20; // 每批請求的數量
+        const totalSpecies = 1008; // 總共的數量
+
+        for (let i = 1; i <= totalSpecies; i += batchSize) {
+            const requests = Array.from({ length: batchSize }, (_, index) =>
+                axios.get(`${Species_URL}${i + index}`)
+            );
+            const responses = await Promise.all(requests);
+            const data = responses.map(response => response.data);
+            speciesDataArray.push(...data);
+        }
+
+        return speciesDataArray;
     } catch (error) {
-        console.log('Error fetching all species data:', error);
+        console.error('Error fetching all species data:', error.message);
         return [];
     }
 };
