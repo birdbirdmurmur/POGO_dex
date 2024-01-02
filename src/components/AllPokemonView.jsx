@@ -17,7 +17,7 @@ export const AllPokemonView = ({ item, getZhType, getBgColor }) => {
             }}>
                 <CardContent>
                     <Typography variant="h6" sx={{ mb: 1 }}>
-                        {item.dexNr}. {item.names.English}
+                        {item.dexNr}. {item.names.Chinese}
                     </Typography>
                     <Chip
                         label={getZhType(item.primaryType.names.English)}
@@ -35,7 +35,7 @@ export const AllPokemonView = ({ item, getZhType, getBgColor }) => {
                     <CardMedia
                         component="img"
                         image={item.assets.image}
-                        alt={item.names.English}
+                        alt={item.names.Chinese}
                         sx={{
                             width: '80px',
                             height: '80px',
