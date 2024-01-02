@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 import Grid from '@mui/material/Grid'
 
@@ -8,39 +7,53 @@ import { SearchBar } from '../components/SearchBar'
 import { FilterButtons } from '../components/FilterButtons'
 import { AllPokemonView } from '../components/AllPokemonView'
 import { allTypes } from '../data'
+import { fetchPokedex, fetchAllSpeciesData } from '../api/api'
 
-const Pokedex_URL = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json'
 
 export const Pokedex = () => {
     const [pokedex, setPokedex] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(Pokedex_URL)
-                setPokedex(response.data)
-            } catch (error) {
-                console.log('Error fetching data:', error)
-            }
-        }
+    const fetchData = useCallback(async () => {
+        const [pokedexData, speciesData] = await Promise.all([
+            fetchPokedex(),
+            fetchAllSpeciesData(),
+        ])
 
-        fetchData()
+        const updatedPokedex = pokedexData.map((item, index) => ({
+            ...item,
+            names: {
+                ...item.names,
+                Chinese: speciesData[index].names[3].name,
+            }
+        }))
+
+        setPokedex(updatedPokedex)
     }, [])
 
-    const filteredPokedex = pokedex.filter((item) =>
-        item.names.English.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
 
-    const getZhType = (str) => {
+    const filteredPokedex = useMemo(() => {
+        return pokedex.filter((item) => {
+            const matchesSearchTerm = item.names.Chinese.toLowerCase().includes(searchTerm.toLowerCase())
+            // 篩選types&generation
+            const matchesType = item.primaryType.names.English.toLowerCase().includes(searchTerm.toLowerCase())
+
+            return matchesSearchTerm || matchesType
+        })
+    }, [pokedex, searchTerm])
+
+    const getZhType = useCallback((str) => {
         const matchedType = allTypes.find((type) => type.enType === str.toLowerCase())
         return matchedType ? matchedType.zhType : str
-    }
+    }, [])
 
-    const getBgColor = (type) => {
+    const getBgColor = useCallback((type) => {
         const matchedType = allTypes.find((t) => t.enType === type.toLowerCase())
         return matchedType ? matchedType.bgColor : '#17CCF0'
-    }
+    }, [])
 
     return (
         <React.Fragment>
@@ -53,17 +66,18 @@ export const Pokedex = () => {
             {/* All Data */}
             <Grid container spacing={2}>
                 {filteredPokedex.map((item, index) => {
-                    // if (item.generation === 1) {
-                    return (
-                        <AllPokemonView
-                            key={index}
-                            item={item}
-                            getZhType={getZhType}
-                            getBgColor={getBgColor}
-                        />
-                    )
-                    // }
-                })}
+                    if (item.generation === 1) {
+                        return (
+                            <AllPokemonView
+                                key={index}
+                                item={item}
+                                getZhType={getZhType}
+                                getBgColor={getBgColor}
+                            />
+                        )
+                    }
+                }
+                )}
             </Grid>
         </React.Fragment>
     )
