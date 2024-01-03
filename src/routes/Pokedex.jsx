@@ -12,38 +12,52 @@ import { fetchPokedex, fetchAllSpeciesData } from '../api/api'
 
 export const Pokedex = () => {
     const [pokedex, setPokedex] = useState([])
+    const [filteredPokedex, setFilteredPokedex] = useState([]);
     const [searchTerm, setSearchTerm] = useState('')
 
     const fetchData = useCallback(async () => {
-        const [pokedexData, speciesData] = await Promise.all([
-            fetchPokedex(),
-            fetchAllSpeciesData(),
-        ])
+        try {
+            const [pokedexData, speciesData] = await Promise.all([
+                fetchPokedex(),
+                fetchAllSpeciesData(),
+            ])
 
-        const updatedPokedex = pokedexData.map((item, index) => ({
-            ...item,
-            names: {
-                ...item.names,
-                Chinese: speciesData[index].names[3].name,
-            }
-        }))
+            const updatedPokedex = pokedexData.map((item, index) => ({
+                ...item,
+                names: {
+                    ...item.names,
+                    Chinese: speciesData[index].names[3].name,
+                }
+            }))
 
-        setPokedex(updatedPokedex)
+            setPokedex(updatedPokedex)
+            setFilteredPokedex(updatedPokedex)
+        } catch (error) {
+            console.error('Error fetching data:', error)
+        }
     }, [])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
 
-    const filteredPokedex = useMemo(() => {
-        return pokedex.filter((item) => {
-            const matchesSearchTerm = item.names.Chinese.toLowerCase().includes(searchTerm.toLowerCase())
-            // 篩選types&generation
-            const matchesType = item.primaryType.names.English.toLowerCase().includes(searchTerm.toLowerCase())
 
-            return matchesSearchTerm || matchesType
-        })
-    }, [pokedex, searchTerm])
+    const handleFilter = (filterType, filterValue) => {
+        let filteredData = pokedex
+
+        if (filterType === 'type') {
+            filteredData = pokedex.filter((item) => {
+                return (
+                    item.primaryType.names.English.toLowerCase().includes(filterValue.toLowerCase()) ||
+                    (item.secondaryType && item.secondaryType.names.English.toLowerCase().includes(filterValue.toLowerCase()))
+                )
+            })
+        } else if (filterType === 'generation') {
+            filteredData = pokedex.filter((item) => item.generation === Number(filterValue))
+        }
+
+        setFilteredPokedex(filteredData)
+    }
 
     const getZhType = useCallback((str) => {
         const matchedType = allTypes.find((type) => type.enType === str.toLowerCase())
@@ -62,11 +76,13 @@ export const Pokedex = () => {
             {/* SearchBar */}
             <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             {/* FilterButtons */}
-            <FilterButtons />
+            <FilterButtons onFilter={handleFilter} />
             {/* All Data */}
             <Grid container spacing={2}>
-                {filteredPokedex.map((item, index) => {
-                    if (item.generation === 1) {
+                {filteredPokedex
+                    .filter((item) => item.names.Chinese.includes(searchTerm))
+                    .map((item, index) => {
+                        // if (item.generation === 1) {
                         return (
                             <AllPokemonView
                                 key={index}
@@ -76,8 +92,8 @@ export const Pokedex = () => {
                             />
                         )
                     }
-                }
-                )}
+                        // }
+                    )}
             </Grid>
         </React.Fragment>
     )

@@ -5,16 +5,17 @@ import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse'
 import { allTypes, allGenerations } from '../data'
 
-const CustomButtonGroup = ({ data }) => (
+const CustomButtonGroup = ({ items, onClick }) => (
     <ButtonGroup
         variant="contained"
         aria-label="outlined button group"
         sx={{ m: '20px auto', border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}
     >
-        {data.map((item, index) => (
+        {items.map((item, index) => (
             <Button
                 key={index}
                 sx={{ marginRight: '5px', ...item.sx }}
+                onClick={() => onClick(item.enType || item.id)}
             >
                 {item.label}
             </Button>
@@ -22,10 +23,9 @@ const CustomButtonGroup = ({ data }) => (
     </ButtonGroup>
 )
 
-export const FilterButtons = () => {
+export const FilterButtons = ({ onFilter }) => {
     const [showTypes, setShowTypes] = useState(false)
     const [showGeneration, setShowGeneration] = useState(false)
-
 
     const handleTypesClick = () => {
         setShowTypes(!showTypes)
@@ -33,6 +33,10 @@ export const FilterButtons = () => {
 
     const handleGenerationClick = () => {
         setShowGeneration(!showGeneration)
+    }
+
+    const handleFilterBtnClick = (filterType, filterValue) => {
+        onFilter(filterType, filterValue)
     }
 
     return (
@@ -43,16 +47,22 @@ export const FilterButtons = () => {
             </ButtonGroup>
 
             <Collapse in={showTypes} timeout="auto" unmountOnExit>
-                <CustomButtonGroup data={allTypes.map((type) => ({
+                <CustomButtonGroup items={allTypes.map((type) => ({
+                    enType: type.enType,
                     label: type.zhType,
                     sx: { backgroundColor: type.bgColor },
-                }))} />
+                }))}
+                    onClick={(value) => handleFilterBtnClick('type', value)}
+                />
             </Collapse>
 
             <Collapse in={showGeneration} timeout="auto" unmountOnExit>
-                <CustomButtonGroup data={allGenerations.map((gen) => ({
+                <CustomButtonGroup items={allGenerations.map((gen) => ({
+                    id: gen.id,
                     label: `${gen.zhName}(${gen.zhRegion})`,
-                }))} />
+                }))}
+                    onClick={(value) => handleFilterBtnClick('generation', value)}
+                />
             </Collapse>
         </Box>
     )
